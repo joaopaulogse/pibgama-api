@@ -1,0 +1,60 @@
+{
+  "name": "pibgama-api",
+  "version": "1.0.0",
+  "description": "API da Primeiro Igreja Batista do Gama",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon",
+    "test": "jest --forceExit",
+    "lint": "eslint"
+  },
+  "keywords": [],
+  "author": "João Paulo",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "cep-promise": "^3.0.3",
+    "express": "^4.16.3",
+    "express-react-views": "^0.10.5",
+    "express-validation": "^1.0.2",
+    "helmet": "^3.13.0",
+    "http-status": "^1.2.0",
+    "joi": "^13.6.0",
+    "joi-cpf-cnpj": "^0.1.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.2.15",
+    "mongoose-delete": "^0.4.0",
+    "mongoose-paginate": "^5.0.3",
+    "morgan": "^1.9.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "faker": "^4.1.0",
+    "gulp": "^3.9.1",
+    "gulp-inline-css": "^3.3.0",
+    "gulp-sass": "^4.0.1",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.4",
+    "supertest": "^3.3.0"
+  },
+  "jest": {
+    "verbose": false,
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/tests/**/*{test|spec}.js"
+    ],
+    "collectCoverageFrom": [
+      "**/*{test|spec}.js",
+      "!node_modules/**"
+    ],
+    "setupFiles": [
+      "<rootDir>/tests/integration/setup.js"
+    ]
+  }
+}

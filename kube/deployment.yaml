@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-rest
+  template:
+    metadata:
+      labels:
+        app: api-rest
+    spec:
+      containers:
+        - name: api-node
+          image: api-node:v1
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+

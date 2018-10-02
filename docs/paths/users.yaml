@@ -1,0 +1,26 @@
+get:
+  tags:
+    - Users
+  responses:
+    200:
+      description: OK
+post:
+  tags:
+    - Users
+  responses:
+    200:
+      description: OK
+
+id:
+  put:
+    tags:
+      - Users
+    responses:
+      200:
+        description: OK
+  get:
+    tags:
+      - Users
+    responses:
+      200:
+        description: OK

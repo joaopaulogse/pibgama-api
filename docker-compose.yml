@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  pibgama-api:
+    container_name: pibgama-api
+    build: .
+    env_file: [ ./.env ]
+    command: ./start.sh
+    volumes: [ ".:/usr/app/current" ]
+    ports: [ "3000:3000" ]
+    networks: [ pibgama-net ]
+    links: [ mongo ]
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports: [ "27017:27017" ]
+    networks: [ pibgama-net ]
+    command: --logpath=/dev/null
+networks:
+    pibgama-net:

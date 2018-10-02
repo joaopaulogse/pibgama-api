@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: api-rest
+  labels:
+    run: api-rest
+spec:
+  selector:
+    app: api-rest
+  ports:
+   -  protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+  externalTrafficPolicy: Local
