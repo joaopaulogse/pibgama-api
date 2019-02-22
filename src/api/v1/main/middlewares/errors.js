@@ -1,6 +1,6 @@
 const validator = require("express-validation");
 const HttpStatus = require("http-status");
-
+const logger = require("../../../../config/log.config");
 /**
  * Manipula os erros enviados pelo Joi
  * para que sejam enviado somente as mensagens
@@ -31,9 +31,22 @@ const error404 = (req, res) => {
     });
 };
 
+const errorDefault = (error, req, res, next) => {
+    logger.error(error);
+    if(error){
+        return res.status(error.httpStatus || HttpStatus.BAD_REQUEST).json({
+            code: error.code,
+            message: error.message,
+            status: 'error'
+        });
+    }else{
+        return next();
+    }
+};
 
 
 module.exports = {
     error404,
-    errorValidation
+    errorValidation,
+    errorDefault
 };

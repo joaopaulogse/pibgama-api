@@ -2,10 +2,16 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const { NotFound } = require("../utils/errors");
-
+const HttpStatus = require("http-status");
+const VueRender = require("../../../config/vue-render");
+const email = require("./email");
+const logger = require("../../../config/log.config");
 class Service {
-    constructor(model = mongoose.model()){
-        this.model = model;
+    constructor(model){
+        this.model = mongoose.model(model);
+        this.email = email;
+        this.httpStatus = HttpStatus;
+        this.logger = logger;
         this.optionsDefault = {
             select: "",
             query:{}
@@ -70,7 +76,7 @@ class Service {
 
     _signToken(payload, options = {}){
         try{
-            return jwt.sign(payload, process.env.SECRET_TOKEN || "JAJAIIA", {
+            return jwt.sign(payload, process.env.SECRET_TOKEN, {
                 expiresIn: "24h",
                 ...options
             });
@@ -100,6 +106,14 @@ class Service {
 
     async findPaginated(query, options) {
         return await this.model.paginate(query, options);
+    }
+
+    async renderPage(file, data, context){
+        try {
+            return await VueRender(file, { data }, context);
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

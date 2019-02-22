@@ -1,5 +1,5 @@
-const { service: UserService } = require("../../businesses/users");
-const userService = new UserService();
+const { controller: UserController } = require("../../businesses/users");
+const userController = new UserController();
 const HttpStatus = require("http-status");
 const _ = require("lodash");
 const allowURL = [
@@ -38,7 +38,7 @@ module.exports = async (req, res, next) => {
         } else {
             const token = req.headers["x-access-token"] || req.body.token || req.query.token;
             if(token){
-                req.user = await userService.verifyToken(token);
+                req.user = await userController.verifyToken(token);
                 return next();
             }else{
                 throw new Error("Token no provider");

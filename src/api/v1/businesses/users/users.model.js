@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
     },
     birthdate: Date,
     authToken: String,
+    passwordToken: String,
     cpf: String,
     emailVerified: {
         type: Boolean,
