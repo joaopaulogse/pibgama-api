@@ -32,7 +32,6 @@ class UserController extends BaseController {
         try {
             const user = await this._create(req.body);
             const token = this._signToken({ id: user._id });
-            console.log(user);
             const url = `${process.env.URL_API}/v1/users/createPassword?token=${token}`;
             await this.email.send({
                 to: user.email,
@@ -83,10 +82,10 @@ class UserController extends BaseController {
 
     async update(req, res, next){
         try {
-
+            const { location = undefined } = req.body;
             const body = {
                 ...req.body,
-                location: !_.isEmpty(body.location) ? [body.location.lat, body.location.lng] : undefined,
+                location: !_.isEmpty(location) ? [location.lat, location.lng] : undefined,
             };
             const response = await this._update(req.user.id, body, {
                 select:"-authToken"

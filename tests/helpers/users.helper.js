@@ -4,8 +4,8 @@ const server = require("../../server");
 
 const apiServer = supertest(server);
 
-const UserService = require("../../src/api/v1/businesses/users/users.service");
-const userService = new UserService();
+const UserController = require("../../src/api/v1/businesses/users/users.controller");
+const userController = new UserController();
 
 function createObjectUser() {
     return {
@@ -39,5 +39,5 @@ const createUserAuth = async (userObj = createObjectUser()) => {
 module.exports = {
     createObjectUser,
     createUserAuth,
-    userService
+    userController
 };

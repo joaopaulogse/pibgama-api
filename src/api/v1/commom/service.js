@@ -102,6 +102,13 @@ class Service {
         }
     }
 
+    async _delete(conditions){
+        try {
+            return await this.model.deleteMany(conditions);
+        } catch (error) {
+            throw error;
+        }
+    }
 
 
     async findPaginated(query, options) {
