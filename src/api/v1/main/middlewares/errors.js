@@ -16,24 +16,30 @@ exports.handlerErrorsJoiValidateMessage = (errors) =>{
 
 const errorValidation = (err, req, res, next) => {
     if(err instanceof validator.ValidationError){
-        res.status(HttpStatus.BAD_REQUEST).json({
-            message: this.handlerErrors(err.errors)
+        return res.status(HttpStatus.BAD_REQUEST).json({
+            message: this.handlerErrors(err.errors),
+            status: "error",
+            code: "002"
         });
     }else{
-        next();
+        if(err){
+            return next(err);
+        } else {
+            return next();
+        }
     }
 };
 
 const error404 = (req, res) => {
-    res.status(HttpStatus.NOT_FOUND).json({
+    return res.status(HttpStatus.NOT_FOUND).json({
         status: 'error',
         message: "Not found"
     });
 };
 
 const errorDefault = (error, req, res, next) => {
-    logger.error(error);
     if(error){
+        logger.error(error);
         return res.status(error.httpStatus || HttpStatus.BAD_REQUEST).json({
             code: error.code,
             message: error.message,
