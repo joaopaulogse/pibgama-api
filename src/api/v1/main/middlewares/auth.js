@@ -26,15 +26,17 @@ const allowURL = [
 ];
 
 const verifyURL = (path, method) => {
-    return allowURL.map((paths) => {
-        return (_.startsWith(path, paths.url) && paths.method === method);
-    }).includes(true);
+    return true;
+    // allowURL.map((paths) => {
+    //     return (_.startsWith(path, paths.url) && paths.method === method);
+    // }).includes(true);
 };
 
-module.exports = async (req, res, next) => {
+module.exports = async (error, req, res, next) => {
     try {
         if(verifyURL(req.path, req.method)){
-            return next();
+            console.log("passo aqui ?");
+            return next(error);
         } else {
             const token = req.headers["x-access-token"] || req.body.token || req.query.token;
             if(token){
@@ -47,7 +49,7 @@ module.exports = async (req, res, next) => {
 
     } catch (error) {
         return res.status(HttpStatus.BAD_REQUEST).json({
-            message:error.message || "Token no provider",
+            message: error.message || "Token no provider",
             status: "error"
         });
     }

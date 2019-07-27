@@ -4,7 +4,7 @@
   "description": "API da Primeiro Igreja Batista do Gama",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon --legacy-watch",
     "test": "jest --forceExit",
     "lint": "eslint",
     "gulp:build": "gulp build"

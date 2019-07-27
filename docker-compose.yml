@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   pibgama-api:
@@ -13,7 +13,7 @@ services:
 
   mongo:
     container_name: mongo
-    image: mongo
+    image: mongo:latest
     ports: [ "27017:27017" ]
     networks: [ pibgama-net ]
     command: --logpath=/dev/null

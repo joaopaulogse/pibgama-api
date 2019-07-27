@@ -1,6 +1,6 @@
 const express = require("express");
 const routesV1 = require("../api/v1/main/routes");
-const { error404, errorDefault } = require("../api/v1/main/middlewares/errors");
+const { error404 } = require("../api/v1/main/middlewares/errors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -18,7 +18,7 @@ app.use("/public", express.static("public"));
 
 app.use("/v1", routesV1);
 
-app.use(errorDefault);
 app.use(error404);
+
 
 module.exports = app;

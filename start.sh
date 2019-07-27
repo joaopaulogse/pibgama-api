@@ -11,7 +11,7 @@ fi
 
 # echo "Installing dependencies..."
 # npm install
-
+export NODE_ENV=docker
 echo "Start server ..."
 npm run dev
 
