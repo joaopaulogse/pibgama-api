@@ -25,7 +25,7 @@ class BaseController extends Service {
 
     async findAll(req, res, next) {
         try {
-            const docs = await this.findPaginated(req.query);
+            const docs = await this._find(req.query);
             res.status(this.httpStatus.OK).json(docs);
         } catch (error) {
             next(error);
