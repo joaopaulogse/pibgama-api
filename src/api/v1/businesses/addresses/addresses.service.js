@@ -4,7 +4,7 @@ const cep = require("cep-promise");
 
 class AddressesService extends Service {
     constructor(){
-        super(Addresses);
+        super("addresses");
     }
 
     async searchCep(queryCep){

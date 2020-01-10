@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   pibgama-api:
@@ -12,7 +12,7 @@ services:
     links: [ mongo ]
 
   mongo:
-    container_name: mongo
+    container_name: mongo-db
     image: mongo
     ports: [ "27017:27017" ]
     networks: [ pibgama-net ]

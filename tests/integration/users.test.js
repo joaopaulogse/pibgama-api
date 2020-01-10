@@ -51,7 +51,7 @@ describe("Users", () => {
         });
 
         afterAll(async () => {
-            await HelperUser.userService._remove({});
+            await HelperUser.userController._delete({});
         });
     });
 
@@ -79,7 +79,7 @@ describe("Users", () => {
             expect(body).toHaveProperty("baptized");
         });
         afterAll(async () => {
-            await HelperUser.userService._remove({});
+            await HelperUser.userController._delete({});
         });
     });
 });

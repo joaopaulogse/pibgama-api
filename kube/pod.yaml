@@ -11,6 +11,8 @@ spec:
       image: api-node:v1
       ports:
         - containerPort: 3000
+      command:
+        - ./start.sh
       resources:
         requests:
           memory: "64Mi"
