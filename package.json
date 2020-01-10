@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "test": "jest --forceExit",
     "lint": "eslint",
-    "gulp:build": "gulp build"
+    "start": "export NODE_ENV=8080 && node server.js"
   },
   "keywords": [],
   "author": "João Paulo",
