@@ -14,6 +14,8 @@ Router
     .get(controller.findAll.bind(controller));
 
 Router
+    .get("/me", controller.getUserLogged.bind(controller));
+Router
     .route("/:id")
     .put(validate(validationUser.updateUser), controller.update.bind(controller))
     .get(controller.findOne.bind(controller))
@@ -23,11 +25,13 @@ Router
     .put("/restore/:id", controller.restore.bind(controller));
 
 Router
-    .get("/me", controller.getUserLogged.bind(controller));
-Router
     .post("/pass", validate(validationUser.createPassword), controller.createPassword.bind(controller));
+
 Router
     .post("/auth", validate(validationUser.auth), controller.authentication.bind(controller));
+
+Router
+    .post("/access", validate(validationUser.access), controller.plataformAccess.bind(controller));
 
 
 

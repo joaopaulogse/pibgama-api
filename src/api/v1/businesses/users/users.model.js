@@ -6,8 +6,7 @@ const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
     username:{
-        type: String,
-        unique: true
+        type: String
     },
     nickname: String,
     firstName: String,
@@ -28,7 +27,6 @@ const UserSchema = new mongoose.Schema({
     },
     birthdate: Date,
     authToken: String,
-    passwordToken: String,
     cpf: String,
     emailVerified: {
         type: Boolean,
@@ -37,14 +35,11 @@ const UserSchema = new mongoose.Schema({
     phone: [{
         type: {
             type: String,
-            enum: ["RESIDENTIAL", "COMMERCIAL", "CELL-PHONE"]
+            enum: ["RESIDENTIAL", "COMMERCIAL", "CELL-PHONE"],
+            default: "CELL-PHONE"
         },
         number: String
     }],
-    location:{
-        type: [Number],
-        index: "2d"
-    },
     address: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'addresses'

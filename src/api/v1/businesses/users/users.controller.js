@@ -31,21 +31,40 @@ class UserController extends BaseController {
     async create(req, res, next){
         try {
             const user = await this._create(req.body);
-            const token = this._signToken({ id: user._id });
-            const url = `${process.env.URL_API}/v1/users/createPassword?token=${token}`;
-            await this.email.send({
-                to: user.email,
-                from: process.env.EMAIL_TRANSACTIONAL,
-                subject: "Seja bem vindo a PIBGama",
-                html: readFileSync(`${__dirname}/../../../../../templates/mailTemplates/Welcome.html`).toString(),
-                substitutions:{
-                    "firstName": user.firstName,
-                    "url": url,
-                },
 
-            });
-            await this._update(user._id, { passwordToken: token });
             return res.status(this.httpStatus.CREATED).json(user);
+        } catch (error) {
+            return next(error);
+        }
+    }
+
+    async plataformAccess(req, res, next) {
+        try {
+            const user = await this.verify("_id", req.body._id, { select: "+password" });
+            if(!_.isEmpty(user.password)){
+                throw new NotAuthorized("This user have password");
+            }else {
+                user.role = req.body.role;
+                await user.save();
+
+                const token = await this._signToken({ id: user._id }, "1d");
+                console.log(token);
+                const url = `${process.env.URL_API_CREATE_PASSWORD}?token=${token}`;
+                await this.email.send({
+                    to: user.email,
+                    from: process.env.EMAIL_TRANSACTIONAL,
+                    subject: "Seja bem vindo a PIBGama",
+                    html: readFileSync(`${__dirname}/../../../../../templates/mailTemplates/Welcome.html`).toString(),
+                    substitutions:{
+                        "firstName": user.firstName,
+                        "url": url,
+                    }
+                });
+                return res.status(this.httpStatus.OK).json({
+                    url,
+                    _id:  user._id
+                });
+            }
         } catch (error) {
             return next(error);
         }
@@ -53,12 +72,12 @@ class UserController extends BaseController {
 
     async createPassword(req, res, next){
         try {
-            const { id, password } = req.body;
-            const user = await this.verify("_id", id, { select: "+password" });
+            const { password } = req.body;
+            const user = await this.verify("_id", req.user.id, { select: "+password" });
             if(!_.isEmpty(user.password)){
                 throw new NotAuthorized("This user have password");
             }else{
-                await this._update(id, { emailVerified: true, passwordToken: '' });
+                await this._update(req.user.id, { emailVerified: true });
                 user.password = password;
                 await user.save();
             }
@@ -82,12 +101,10 @@ class UserController extends BaseController {
 
     async update(req, res, next){
         try {
-            const { location = undefined } = req.body;
             const body = {
-                ...req.body,
-                location: !_.isEmpty(location) ? [location.lat, location.lng] : undefined,
+                ...req.body
             };
-            const response = await this._update(req.user.id, body, {
+            const response = await this._update(req.params.id, body, {
                 select:"-authToken"
             });
             res.status(this.httpStatus.OK).json(response);
@@ -109,11 +126,11 @@ class UserController extends BaseController {
                 throw new NotAuthorized("Password not createad");
             }
             if(user.validPassword(password)){
+                user.password = undefined;
                 const token = await this.tokenAuth(user);
-                const userChanged = await this._update(user.id, { authToken: token });
-                return { user: userChanged, token };
+                return { user, token };
             }else{
-                throw new NotAuthorized();
+                throw new NotAuthorized("Invalid Password");
             }
         } catch (error) {
             throw error;
