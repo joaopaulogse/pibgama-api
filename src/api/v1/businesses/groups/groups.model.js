@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate");
 const mongooseDelete = require("mongoose-delete");
 
-const { ValidationError } = require("../../utils/errors");
+// const { ValidationError } = require("../../utils/errors");
 const TYPES = ["SMALL", "SECTOR", "AREA", "NETWORK", "DISTRICT"];
 const GroupSchema = new mongoose.Schema({
     name: {
@@ -27,8 +27,7 @@ const GroupSchema = new mongoose.Schema({
     hour: Date,
     host: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users',
-        required: true
+        ref: 'users'
     },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
@@ -67,26 +66,26 @@ const GroupSchema = new mongoose.Schema({
     versionKey: false
 });
 
-GroupSchema.pre("save", async function() {
-    const group = await this.populate("parent leaders").execPopulate();
-    if(group.parent){
-        if(group.type === group.parent.type){
-            throw new ValidationError("Group type is same as top group");
-        }
-        // Hirarquia
-        TYPES.forEach((type, i) => {
-            if(group.type === type){
-                const groupSuperior = TYPES[++i];
-                if(groupSuperior){
-                    if(group.parent.type !== groupSuperior){
-                        throw new ValidationError(`Group ${group.name} cannot be associated with this Group ${group.parent.name}`);
-                    }
-                }
-            }
-        });
-    }
+// GroupSchema.pre("save", async function() {
+//     const group = await this.populate("parent leaders").execPopulate();
+//     if(group.parent){
+//         if(group.type === group.parent.type){
+//             throw new ValidationError("Group type is same as top group");
+//         }
+//         // Hirarquia
+//         TYPES.forEach((type, i) => {
+//             if(group.type === type){
+//                 const groupSuperior = TYPES[++i];
+//                 if(groupSuperior){
+//                     if(group.parent.type !== groupSuperior){
+//                         throw new ValidationError(`Group ${group.name} cannot be associated with this Group ${group.parent.name}`);
+//                     }
+//                 }
+//             }
+//         });
+//     }
 
-});
+// });
 
 GroupSchema.plugin(mongoosePaginate);
 GroupSchema.plugin(mongooseDelete, {

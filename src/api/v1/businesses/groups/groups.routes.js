@@ -16,10 +16,6 @@ Router
     .route("/:id")
     .put(validate(validationUser.updateGroup), controller.update.bind(controller))
     .get(controller.findOne.bind(controller))
-    .delete(controller.deleteLogic.bind(controller));
-
-Router
-    .put("/restore/:id", controller.restore.bind(controller));
-
+    .delete(controller.delete.bind(controller));
 
 module.exports = Router;
