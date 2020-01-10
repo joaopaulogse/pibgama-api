@@ -1,32 +1,36 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const { NotFound } = require("../utils/errors");
 const HttpStatus = require("http-status");
-const VueRender = require("../../../config/vue-render");
 const email = require("./email");
 const logger = require("../../../config/log.config");
+const Token = require("../utils/token");
+
 class Service {
-    constructor(model){
+    constructor(model) {
         this.model = mongoose.model(model);
         this.email = email;
         this.httpStatus = HttpStatus;
         this.logger = logger;
         this.optionsDefault = {
             select: "",
-            query:{}
+            query: {},
+            sort: {},
+            populate: ""
         };
     }
 
-    async verify(field, payload, options = this.optionsDefault){
+    async verify(field, payload, options = this.optionsDefault) {
         try {
-            const doc = await this.model.findOne({
-                [field]: payload,
-                ...options.query
-            }).select(options.select);
-            if(_.isEmpty(doc)){
+            const doc = await this.model
+                .findOne({
+                    [field]: payload,
+                    ...options.query
+                })
+                .select(options.select);
+            if (_.isEmpty(doc)) {
                 throw new NotFound();
-            }else{
+            } else {
                 return doc;
             }
         } catch (error) {
@@ -34,7 +38,7 @@ class Service {
         }
     }
 
-    async _create(payload){
+    async _create(payload) {
         try {
             return await new this.model(payload).save();
         } catch (error) {
@@ -42,31 +46,37 @@ class Service {
         }
     }
 
-    async _update(_id, payload, options = this.optionsDefault){
+    async _update(_id, payload, options = this.optionsDefault) {
         try {
-            return await this.model.findOneAndUpdate({
-                _id
-            }, {
-                $set: {
-                    ...payload
-                }
-            }, {
-                new: true
-            }).select(options.select);
+            return await this.model
+                .findOneAndUpdate(
+                    {
+                        _id
+                    },
+                    {
+                        $set: {
+                            ...payload
+                        }
+                    },
+                    {
+                        new: true
+                    }
+                )
+                .select(options.select);
         } catch (error) {
             throw error;
         }
     }
 
-    async _find(query = {}){
+    async _find(query = {}, options = this.optionsDefault) {
         try {
-            return await this.model.find(query);
+            return await this.model.find(query).populate(options.populate).sort(options.sort);
         } catch (error) {
             throw error;
         }
     }
 
-    async _findOne(query = {}){
+    async _findOne(query = {}) {
         try {
             return await this.model.findOne(query);
         } catch (error) {
@@ -74,35 +84,23 @@ class Service {
         }
     }
 
-    _signToken(payload, options = {}){
-        try{
-            return jwt.sign(payload, process.env.SECRET_TOKEN, {
-                expiresIn: "24h",
-                ...options
-            });
-        } catch (error) {
-            throw error;
-        }
+    async _signToken(payload, options = "7d") {
+        return Token.generateToken(payload, options);
     }
 
     async verifyToken(token) {
-        try {
-            const verify = await jwt.verify(token, process.env.SECRET_TOKEN);
-            return verify;
-        } catch(error) {
-            throw error;
-        }
+        return Token.verifyToken(token);
     }
 
-    async _remove(id){
+    async _remove(id) {
         try {
-            return await this.model.delete(id);
+            return await this.model.deleteOne({_id: id});
         } catch (error) {
             throw error;
         }
     }
 
-    async _delete(conditions){
+    async _delete(conditions) {
         try {
             return await this.model.deleteMany(conditions);
         } catch (error) {
@@ -110,17 +108,8 @@ class Service {
         }
     }
 
-
     async findPaginated(query, options) {
         return await this.model.paginate(query, options);
-    }
-
-    async renderPage(file, data, context){
-        try {
-            return await VueRender(file, { data }, context);
-        } catch (error) {
-            throw error;
-        }
     }
 }
 

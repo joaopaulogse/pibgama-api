@@ -4,9 +4,11 @@ const { error404 } = require("../api/v1/main/middlewares/errors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const { setupDatabase } = require("./mongodb");
+
 const app = express();
 
-require("./mongodb");
+setupDatabase();
 app.use(morgan("combined"));
 
 app.use(bodyParser.json());
