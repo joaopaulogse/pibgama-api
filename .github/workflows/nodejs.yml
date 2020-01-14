@@ -17,13 +17,23 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Run API
+    - name: Build
+        # install gettext-base to use envsubst
       run: |
-        npm install
-        npm start &
+        apt-get install gettext-base
+        JWT_PRIVATE_KEY=${{ secrets.JWT_PRIVATE_KEY }} JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }} NODE_ENV=${{secrets.NODE_ENV}} DB_URL=${{secrets.DB_URL}} envsubst < app.yaml.template  > app.yaml
       env:
         CI: true
         JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
         JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
         NODE_ENV: ${{secrets.NODE_ENV}}
         DB_URL: ${{secrets.DB_URL}}
+    - name: Deploy
+      uses: actions/checkout@v1
+      uses: actions-hub/gcloud@master
+      env:
+        PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+        APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+      with:
+        args: app deploy app.yaml
+
