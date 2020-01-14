@@ -20,7 +20,7 @@ jobs:
     - name: Run API
       run: |
         npm install
-        npm start && exit
+        npm start &
       env:
         CI: true
         JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
