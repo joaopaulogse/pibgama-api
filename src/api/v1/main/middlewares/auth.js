@@ -7,6 +7,10 @@ const allowURL = [
         method: "POST"
     },
     {
+        url: "/users",
+        method: "POST"
+    },
+    {
         url: "/addresses/",
         method: "GET"
     },
@@ -21,8 +25,6 @@ const verifyURL = (path, method) => {
 module.exports = async (req, res, next) => {
     try {
         if(verifyURL(req.path, req.method)){
-            console.log("passo aqui ?");
-            console.log(req.headers);
             return next();
         } else {
             let token = req.headers["authorization"];
@@ -30,7 +32,6 @@ module.exports = async (req, res, next) => {
                 token = token.replace('Bearer ', '');
                 req.user = await Token.verifyToken(token);
                 req.user.token = token;
-                console.log(req.user);
                 return next();
             }else{
                 throw new Error("Token no provider");
