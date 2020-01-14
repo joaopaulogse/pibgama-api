@@ -11,8 +11,6 @@ resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
-skip_files:
-    - /docker/i
 env_variables:
   JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
   JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
