@@ -7,10 +7,6 @@ const allowURL = [
         method: "POST"
     },
     {
-        url: "/users",
-        method: "POST"
-    },
-    {
         url: "/addresses/",
         method: "GET"
     },

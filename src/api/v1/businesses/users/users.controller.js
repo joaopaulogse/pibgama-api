@@ -73,11 +73,11 @@ class UserController extends BaseController {
     async createPassword(req, res, next){
         try {
             const { password } = req.body;
-            const user = await this.verify("_id", req.user.id, { select: "+password" });
+            const user = await this.verify("_id", req.body.id || req.user.id, { select: "+password" });
             if(!_.isEmpty(user.password)){
                 throw new NotAuthorized("This user have password");
             }else{
-                await this._update(req.user.id, { emailVerified: true });
+                await this._update(req.body.id || req.user.id, { emailVerified: true });
                 user.password = password;
                 await user.save();
             }
