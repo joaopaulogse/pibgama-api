@@ -15,14 +15,13 @@ module.exports = {
             .required()
     },
     createPassword: {
-        body: Joi.object()
-            .keys({
-                password: Joi.string()
-                    .min(6)
-                    .max(20)
-                    .required()
-            })
-            .required()
+        body: {
+            id: Joi.string().allow(null, ""),
+            password: Joi.string()
+                .min(6)
+                .max(20)
+                .required()
+        }
     },
     auth: {
         body: Joi.object()

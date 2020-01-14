@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "test": "jest --forceExit",
     "lint": "eslint",
-    "start": "export NODE_ENV=8080 && node server.js"
+    "start": "export PORT=8080 && export NODE_ENV=production && node server.js"
   },
   "keywords": [],
   "author": "João Paulo",

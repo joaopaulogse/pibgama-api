@@ -3,14 +3,11 @@ mongoose.Promise = global.Promise;
 
 const logger = require("./log.config");
 
-const switchCase = {
-    "dev": `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT || "27017"}/${process.env.DB_DATABASE}`,
-    "docker": `mongodb://mongo:${process.env.DB_PORT || "27017"}/${process.env.DB_DATABASE}`,
-    "production": `${process.env.DB_URL}`,
-    "test": `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT || "27017"}/${process.env.DB_DATABASE}`,
-};
+
 async function setupDatabase() {
-    mongoose.connect(switchCase[process.env.NODE_ENV], {
+    let uri = process.env.DB_URL;
+    logger.info(`Database: ${uri}`);
+    mongoose.connect(uri, {
         useNewUrlParser: true,
     });
     mongoose.set('debug', true);
