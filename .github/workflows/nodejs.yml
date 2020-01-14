@@ -23,10 +23,7 @@ jobs:
     - name: Build
         # install gettext-base to use envsubst
       run: |
-        sudo apt-get update
-        sudo apt autoremove
-        sudo apt-get install gettext-base
-        JWT_PRIVATE_KEY=${{ secrets.JWT_PRIVATE_KEY }} JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }} NODE_ENV=${{secrets.NODE_ENV}} DB_URL=${{secrets.DB_URL}} envsubst < app.yaml.template  > app.yaml
+        JWT_PRIVATE_KEY=${{ secrets.JWT_PRIVATE_KEY }} JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }} NODE_ENV=${{secrets.NODE_ENV}} DB_URL=${{secrets.DB_URL}} envsubst < app.yaml.template > app.yaml
       env:
         CI: true
         JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
