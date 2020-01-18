@@ -3,7 +3,7 @@ version: '3.1'
 services:
   pibgama-api:
     container_name: pibgama-api
-    image: node:10.13.0-alpine
+    build: .
     working_dir: /usr/app/current
     env_file: [ ./.env ]
     command: ./start.sh

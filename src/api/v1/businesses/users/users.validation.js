@@ -4,13 +4,13 @@ module.exports = {
     createUser: {
         body: Joi.object()
             .keys({
-                email: Joi.string().email(),
+                email: Joi.string().email().allow(null, ""),
                 firstName: Joi.string().required(),
                 lastName: Joi.string().required(),
                 genre: Joi.string()
                     .allow(["MALE", "FEMALE"])
                     .required(),
-                username: Joi.string()
+                username: Joi.string().allow(null, "")
             })
             .required()
     },
@@ -44,10 +44,10 @@ module.exports = {
     },
     updateUser: {
         body: Joi.object().keys({
-            username: Joi.string(),
-            nickname: Joi.string(),
-            firstName: Joi.string(),
-            lastName: Joi.string(),
+            username: Joi.string().allow(null, ""),
+            nickname: Joi.string().allow(null, ""),
+            firstName: Joi.string().allow(null, ""),
+            lastName: Joi.string().allow(null, ""),
             email: Joi.string().email(),
             genre: Joi.string().allow(["MALE", "FEMALE"]),
             birthdate: Joi.date().iso(),
@@ -61,7 +61,7 @@ module.exports = {
                         null,
                         ""
                     ),
-                    number: Joi.string()
+                    number: Joi.string().allow(null, "")
                 }),
                 Joi.object().keys({
                     type: Joi.string().allow(
