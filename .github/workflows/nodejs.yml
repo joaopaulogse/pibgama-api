@@ -32,7 +32,6 @@ jobs:
     #     NODE_ENV: ${{secrets.NODE_ENV}}
     #     DB_URL: ${{secrets.DB_URL}}
     - name: Build
-      uses: actions-hub/gcloud@master
       run: |
         make build-and-push
       env:
