@@ -41,7 +41,8 @@ jobs:
         gcloud info
     - name: Build
       run: |
-        make build-and-push
+        make build
+        make push
       env:
         CI: true
         PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
