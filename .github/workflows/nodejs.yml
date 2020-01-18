@@ -31,9 +31,18 @@ jobs:
     #     JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
     #     NODE_ENV: ${{secrets.NODE_ENV}}
     #     DB_URL: ${{secrets.DB_URL}}
+    - uses: actions/checkout@v1
+    - name: Info gcloud
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      env:
+        PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+        APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+    - run: |
+        gcloud info
     - name: Build
       run: |
-        make build-and-push
+        make build
+        make push
       env:
         CI: true
         PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
