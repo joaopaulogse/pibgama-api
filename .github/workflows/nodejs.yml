@@ -42,11 +42,12 @@ jobs:
         JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
         NODE_ENV: ${{secrets.NODE_ENV}}
         DB_URL: ${{secrets.DB_URL}}
-    - name: Deploy
-      uses: actions-hub/gcloud@master
+    - uses: actions/checkout@v1
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       env:
         PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
         APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-      run: |
+    - run: |
+        gcloud info
         cat ./kube/deployment.yaml | sed 's/JWT_PRIVATE_KEY_VALUE/'${{ secrets.JWT_PRIVATE_KEY }}'/' | sed 's/JWT_PUBLIC_KEY_VALUE/'${{ secrets.JWT_PRIVATE_KEY }}'/' | sed 's/DB_URL_VALUE/'${{ secrets.DB_URL }}'/' | kubectl apply -f -
 
