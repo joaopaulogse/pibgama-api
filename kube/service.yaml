@@ -1,15 +1,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: api-rest
+  name: pibgama-api
   labels:
-    run: api-rest
+    run: pibgama-api
 spec:
   selector:
-    app: api-rest
+    app: pibgama-api
   ports:
    -  protocol: TCP
-      port: 3000
+      port: 80
       targetPort: 3000
-  type: NodePort
-  externalTrafficPolicy: Local
+  type: LoadBalancer
